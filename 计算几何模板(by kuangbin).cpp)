@@ -184,8 +184,13 @@ struct Line{
 		s.input();
 		e.input();
 	}
-	void adjust(){
+	//根据x排序
+	void adjustx(){
 		if(e < s)swap(s,e);
+	}
+	//根据y排序
+        void adjusty(){
+		if(e.y<s.y) swap(s,e);
 	}
 	//求线段长度
 	double length(){
@@ -282,6 +287,18 @@ struct Line{
 		Point q = lineprog(p);
 		return Point(2*q.x-p.x,2*q.y-p.y);
 	}
+	//求线段交点
+        Point intersection(Line v)
+    	{
+		double  a1,a2,b1,b2,c1,c2;
+		a1=s.y-e.y;
+		a2=v.s.y-v.e.y;
+		b1=e.x-s.x;
+		b2=v.e.x-v.s.x;
+		c1=s.x*e.y-e.x*s.y;
+		c2=v.s.x*v.e.y-v.e.x*v.s.y;
+		return Point((c1*b2-c2*b1)/(a2*b1-a1*b2),(c1*a2-c2*a1)/(b2*a1-b1*a2));
+   	 }
 };
 //圆
 struct circle{
