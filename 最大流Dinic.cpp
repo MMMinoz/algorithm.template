@@ -100,3 +100,109 @@ int main()
     }
     printf("%d\n",Dinic());
 }
+
+
+///封装
+#include<bits/stdc++.h>
+using namespace std;
+#define INF 0x3f3f3f3f3f3f3f3f
+#define ll long long
+#define mem(a,b) memset(a,b,sizeof(a))
+const int maxn=1e5+5;
+int n,m,s,t;
+int head[maxn],cnt;
+struct e
+{
+    int v;
+    ll w;
+    int next;
+}e[maxn<<1];
+void add(int u,int v,ll w)
+{
+    e[++cnt]={v,w,head[u]};
+    head[u]=cnt;
+}
+struct Dinic
+{
+    int cur[maxn],d[maxn];
+    bool bfs()
+    {
+        queue<int> q;
+        for(int i=1;i<=n;i++)
+            d[i]=-1;
+        d[s]=0;
+        q.push(s);
+        while(!q.empty())
+        {
+            int u=q.front();
+            q.pop();
+            for(int i=head[u];i!=-1;i=e[i].next)
+            {
+                int v=e[i].v;
+                if(d[v]==-1&&e[i].w>0)
+                {
+                    d[v]=d[u]+1;
+                    q.push(v);
+                }
+            }
+        }
+        return d[t]!=-1;
+    }
+
+    ll dfs(int u,ll flow)
+    {
+        ll nowflow=0;
+        if(u==t) return flow;
+        for(int i=cur[u];i!=-1;i=e[i].next)
+        {
+            cur[u]=i;
+            int v=e[i].v;
+            if(d[v]==d[u]+1&&e[i].w>0)
+            {
+                if(ll k=dfs(v,min(flow-nowflow,e[i].w)))
+                {
+                    e[i].w-=k;
+                    e[i^1].w+=k;
+                    nowflow+=k;
+                    if(nowflow==flow)
+                        break;
+                }
+            }
+        }
+        if(!nowflow) d[u]=-2;
+        return nowflow;
+    }
+    ll din()
+    {
+        ll ans=0;
+        while(bfs())
+        {
+            for(int i=1;i<=n;i++)
+                cur[i]=head[i];
+
+            ans+=dfs(s,INF);
+        }
+        return ans;
+    }
+}_din;
+
+void Init()
+{
+    mem(head,-1);
+    cnt=-1;
+}
+
+int main()
+{
+    Init();
+    scanf("%d%d%d%d",&n,&m,&s,&t);
+    int u,v;
+    ll w;
+    while(m--)
+    {
+        scanf("%d%d%lld",&u,&v,&w);
+        add(u,v,w);
+        add(v,u,0);
+    }
+    printf("%lld\n",_din.din());
+}
