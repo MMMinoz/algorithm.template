@@ -60,6 +60,14 @@ struct Point{
 	double operator ^(const Point &b)const{
 		return x*b.y - y*b.x;
 	}
+	//n边形面积
+	double S(int n){
+		double ans=0;
+		for(int i=1;i<=n;i++)
+			ans+=point[i]^point[i+1]);
+		ans+=point[n]^point[1];
+		return abs(ans/2);
+	}
 	//点积
 	double operator *(const Point &b)const{
 		return x*b.x + y*b.y;
