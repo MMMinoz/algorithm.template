@@ -112,8 +112,8 @@ const int maxn=1e5+5;
 //mod一定要是质数
 const int mod=998244353;
 
-int a[maxn];         ///前几项, 前面无效值用0占位
-int st=1,ed=1100; ///使用上面数组下标为[st,ed]的数据
+ll a[maxn];         ///前几项, 前面无效值用0占位
+int st=1,ed=maxn-1; ///使用上面数组下标为[st,ed]的数据
 
 ll fac[maxn+5],inv[maxn+5],facinv[maxn+5];
 ll pre[maxn+5],saf[maxn+5];
@@ -199,6 +199,8 @@ int main()
     int n,q;
     scanf("%d%d",&n,&q);
     ///连续型
+    ///已知前多少项，前ed项
+    ///若最高项为p,则有p+1项
     st=1;
     ed=n;
     for(int i=1;i<=n;i++)
